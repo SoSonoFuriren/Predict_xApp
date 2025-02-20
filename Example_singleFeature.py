@@ -2,21 +2,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
-
-# 產生簡單的時間序列數據（正弦波）
-def generate_time_series(n_samples, n_steps):
-    np.random.seed(42)
-    freq1, freq2, offsets1, offsets2 = np.random.rand(4, n_samples, 1)
-    time = np.linspace(0, 1, n_steps)
-    series = 0.5 * np.sin((time - offsets1) * (freq1 * 10 + 10))
-    series += 0.5 * np.sin((time - offsets2) * (freq2 * 20 + 20))
-    series += 0.1 * (np.random.rand(n_samples, n_steps) - 0.5)  # 加入少許噪音
-    return series[..., np.newaxis]
+import Data_fatch as df
 
 # 生成訓練數據
 n_samples = 1000
 n_steps = 50
-series = generate_time_series(n_samples, n_steps + 1)
+series = df.generate_time_series_singleFeature(n_samples, n_steps + 1)
 X_train, y_train = series[:700, :-1], series[:700, -1] # 取最後一比以前的值做訓練 # 最後一個值作為目標值
 X_valid, y_valid = series[700:900, :-1], series[700:900, -1]
 X_test, y_test = series[900:, :-1], series[900:, -1]
